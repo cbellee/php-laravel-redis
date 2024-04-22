@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    type: php
+  name: myphp
+spec:
+  containers:
+  - image: "${ACR_NAME}.azurecr.io/${CONTAINER_NAME}:latest"
+    name: myphp
+    env:
+    - name: REDIS_HOST
+      value: "${REDIS_NAME}.redis.cache.windows.net"
+    - name: REDIS_PASSWORD
+      value: "${REDIS_PASSWORD}"
+    - name: REDIS_PORT
+      value: "6380"
+    - name: REDIS_SCHEME
+      value: tls
+    - name: REDIS_CACHE_DB
+      value: "0"
+    - name: REDIS_SESSION_DB
+      value: "1"
+    - name: REDIS_QUEUE_DB
+      value: "2"
+    - name: REDIS_HORIZON_DB
+      value: "3"
+    - name: REDIS_CLIENT
+      value: predis
+    - name: BROADCAST_DRIVER
+      value: log
+    - name: CACHE_DRIVER
+      value: redis
+    - name: FILESYSTEM_DISK
+      value: local
+    - name: QUEUE_CONNECTION
+      value: redis
+    - name: SESSION_DRIVER
+      value: redis
+    - name: SESSION_LIFETIME
+      value: "120"
+    - name: APP_NAME
+      value: Laravel
+    - name: APP_ENV
+      value: local
+    - name: APP_KEY
+      value: base64:yMZlr0cVfVf75QZctE/hkgVNWRQZKn3kt2sksCwuz9M=
+    - name: APP_DEBUG
+      value: "true"
+    - name: APP_URL
+      value: http://localhost
+
+    resources:  
+      requests:
+          memory: "250Mi"
+          cpu: "0.5"
+      limits:
+          memory: "500Mi"
+          cpu: "1"
+  dnsPolicy: ClusterFirst
+  
+  restartPolicy: Always
+status: {}
