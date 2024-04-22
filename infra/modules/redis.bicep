@@ -1,5 +1,14 @@
 param location string
-param suffix string 
+param suffix string
+
+@allowed([
+  'Basic'
+  'Standard'
+  'Premium'
+])
+param name string
+param capacity int = 1
+
 var redisName = 'redis-${suffix}'
 
 resource redis 'Microsoft.Cache/redis@2023-08-01' = {
@@ -7,9 +16,9 @@ resource redis 'Microsoft.Cache/redis@2023-08-01' = {
   location: location
   properties: {
     sku: {
-      capacity: 1
-      family: 'P'
-      name: 'Premium'
+      capacity: capacity
+      family: name == 'Premium' ? 'P' : 'C'
+      name: name
     }
     enableNonSslPort: true
     publicNetworkAccess: 'Enabled'

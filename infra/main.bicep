@@ -89,6 +89,16 @@ module aks './modules/aks.bicep' = {
   }
 }
 
+module redis 'modules/redis.bicep' = {
+  name: 'redisDeploy'
+  params: {
+    location: location
+    suffix: suffix
+    name: 'Premium'
+    capacity: 1
+  }
+}
+
 resource networkContributorRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(subscription().subscriptionId, 'Network Contributor', resourceGroup().id)
   properties: {
@@ -102,14 +112,6 @@ resource acrPullRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   properties: {
     principalId: aks.outputs.kubeletIdentityObjectId
     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
-  }
-}
-
-module redis 'modules/redis.bicep' = {
-  name: 'redisDeploy'
-  params: {
-    location: location
-    suffix: suffix
   }
 }
 

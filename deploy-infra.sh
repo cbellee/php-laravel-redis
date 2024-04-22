@@ -30,4 +30,5 @@ az acr login --name $ACR_NAME
 docker push "$ACR_NAME.azurecr.io/$CONTAINER_NAME:latest"
 
 envsubst < ./manifests/php.yaml | kubectl apply -f -
+kubectl wait --for=condition=Ready pod/myphp
 kubectl logs myphp -f
