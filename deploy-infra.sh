@@ -1,11 +1,13 @@
 LOCATION='australiaeast'
 SSH_KEY=$(cat ~/.ssh/id_rsa.pub)
-ADMIN_GROUP_OBJECT_ID="f6a900e2-df11-43e7-ba3e-22be99d3cede"
 RG_NAME="php-laravel-redis-rg"
 AKS_VERSION='1.28.3'
 export CONTAINER_NAME="php-laravel"
+AKS_ADMIN_GROUP_NAME='aks-admin-group'
+CURRENT_USER_ID=$(az ad signed-in-user show --query id -o tsv)
 
-az group create --location $LOCATION --name $RG_NAME
+AKS_ADMIN_GROUP_OBJECT_ID=$(az ad group create --display-name $AKS_ADMIN_GROUP_NAME --mail-nickname $AKS_ADMIN_GROUP_NAME --query id -o tsv)
+az ad group member add --group $AKS_ADMIN_GROUP_NAME --member-id $CURRENT_USER_ID
 
 az deployment group create \
     --resource-group $RG_NAME \
@@ -14,7 +16,7 @@ az deployment group create \
     --parameters ./infra/main.parameters.json \
     --parameters location=$LOCATION \
     --parameters sshPublicKey="$SSH_KEY" \
-    --parameters adminGroupObjectID=$ADMIN_GROUP_OBJECT_ID \
+    --parameters adminGroupObjectID=$AKS_ADMIN_GROUP_OBJECT_ID \
     --parameters aksVersion=$AKS_VERSION \
     --parameters dnsPrefix='aks-basic'
 
