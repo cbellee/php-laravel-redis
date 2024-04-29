@@ -18,28 +18,6 @@
         },
         "vmSku": {
             "value": "Standard_D4ds_v5"
-        },
-        "sshPublicKey": {
-            "value": null
-        },
-        "addressPrefix": {
-            "value": "10.0.0.0/16"
-        },
-        "subnets": {
-            "value": [
-                {
-                    "name": "aks-system-subnet",
-                    "addressPrefix": "10.0.0.0/21"
-                },
-                {
-                    "name": "aks-user-subnet",
-                    "addressPrefix": "10.0.8.0/21"
-                },
-                {
-                    "name": "aks-lb-subnet",
-                    "addressPrefix": "10.0.16.0/24"
-                }
-            ]
         }
     }
 }

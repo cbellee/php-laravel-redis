@@ -1,7 +1,6 @@
 param location string
 param suffix string
 param addressPrefix string
-param subnets array
 param tags object
 
 var vnetName = 'vnet-${suffix}'
@@ -16,13 +15,28 @@ resource vnet 'Microsoft.Network/virtualNetworks@2020-06-01' = {
         addressPrefix
       ]
     }
-    subnets: [for subnet in subnets: {
-      name: subnet.name
-      properties: {
-        addressPrefix: subnet.addressPrefix
+    subnets: [
+      {
+        name: 'aks-system-subnet'
+        properties: {
+          addressPrefix: cidrSubnet(addressPrefix, 24, 0)
+        }
       }
-    }]
+      {
+        name: 'aks-user-subnet'
+        properties: {
+          addressPrefix: cidrSubnet(addressPrefix, 24, 1)
+        }
+      }
+      {
+        name: 'pe-subnet'
+        properties: {
+          addressPrefix: cidrSubnet(addressPrefix, 24, 2)
+        }
+      }
+    ]
   }
 }
 
 output subnets array = vnet.properties.subnets
+output name string = vnet.name

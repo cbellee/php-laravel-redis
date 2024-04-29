@@ -95,11 +95,6 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2021-03-01' = {
       {
         name: 'system'
         mode: 'System'
-        availabilityZones: [
-          '1'
-          '2'
-          '3'
-        ]
         count: 1
         enableAutoScaling: true
         minCount: aksMinNodeCount
@@ -116,11 +111,6 @@ resource aksCluster 'Microsoft.ContainerService/managedClusters@2021-03-01' = {
       {
         name: 'linux'
         mode: 'User'
-        availabilityZones: [
-          '1'
-          '2'
-          '3'
-        ]
         osDiskSizeGB: aksAgentOsDiskSizeGB
         count: aksNodeCount
         minCount: aksMinNodeCount

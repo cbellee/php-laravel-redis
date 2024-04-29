@@ -3,11 +3,11 @@ kind: Pod
 metadata:
   labels:
     type: php
-  name: myphp
+  name: php
 spec:
   containers:
   - image: "${ACR_NAME}.azurecr.io/${CONTAINER_NAME}:latest"
-    name: myphp
+    name: php
     env:
     - name: REDIS_HOST
       value: "${REDIS_NAME}.redis.cache.windows.net"

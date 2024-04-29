@@ -4,7 +4,6 @@ param tags object
 param aksVersion string
 param vmSku string = 'Standard_D4ds_v5'
 param addressPrefix string
-param subnets array
 param sshPublicKey string
 param userName string = 'localadmin'
 param dnsPrefix string
@@ -27,7 +26,6 @@ module vnet './modules/vnet.bicep' = {
     tags: tags
     addressPrefix: addressPrefix
     location: location
-    subnets: subnets
   }
 }
 
@@ -96,6 +94,7 @@ module redis 'modules/redis.bicep' = {
     suffix: suffix
     name: 'Premium'
     capacity: 1
+    vnetName: vnet.outputs.name
   }
 }
 
