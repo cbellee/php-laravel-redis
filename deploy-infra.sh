@@ -51,12 +51,6 @@ az deployment group create \
 export REDIS_NAME=$(az deployment group show --resource-group $AUSE_RG_NAME --name aks-deployment --query 'properties.outputs.redisName.value' -o tsv)
 export REDIS_PASSWORD=$(az deployment group show --resource-group $AUSE_RG_NAME --name aks-deployment --query 'properties.outputs.redisPassword.value' -o tsv)
 
-az aks get-credentials -g $AUSE_RG_NAME -n $AUSE_CLUSTER_NAME --admin --context 'php-laravel-redis-mel' --admin --overwrite-existing
-
-docker build -t  "$ACR_NAME.azurecr.io/$CONTAINER_NAME:latest" .
-az acr login --name $ACR_NAME
-docker push "$ACR_NAME.azurecr.io/$CONTAINER_NAME:latest"
-
 # deploy PHP container to Sydney region AKS cluster, but use the Melbourne region Redis instance
 envsubst < ./manifests/php.yaml | kubectl apply -f -
 kubectl wait --for=condition=Ready pod/php
